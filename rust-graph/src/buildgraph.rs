@@ -1,7 +1,7 @@
 use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
 
-// directed graph
+// Public function to build directed graph
 pub fn build_graph(edges: &[(u64, u64)]) -> DiGraph<u64, ()> {
     let mut graph = DiGraph::new();
     let mut indices: HashMap<u64, NodeIndex> = HashMap::new();

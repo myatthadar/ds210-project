@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
+// Function to parse each line in dataset
 pub fn parse_file<P>(filename: P) -> io::Result<Vec<(u64, u64)>>
 where
     P: AsRef<Path>,
