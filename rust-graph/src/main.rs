@@ -99,3 +99,55 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use petgraph::graph::DiGraph;
+
+    // Helper function to create a test graph
+    fn create_test_graph() -> DiGraph<u64, ()> {
+        let mut graph = DiGraph::new();
+        let n1 = graph.add_node(1); // Node with index 0
+        let n2 = graph.add_node(2); // Node with index 1
+        let n3 = graph.add_node(3); // Node with index 2
+
+        graph.add_edge(n1, n2, ()); // Edge 1->2
+        graph.add_edge(n2, n3, ()); // Edge 2->3
+        graph.add_edge(n3, n1, ()); // Edge 3->1
+
+        graph
+    }
+
+    #[test]
+    fn test_calculate_graph_density() {
+        let graph = create_test_graph();
+        let density = calculate_graph_density(&graph);
+        let expected_density = 3.0 / (3.0 * (3.0 - 1.0)); // 3 edges, 3 nodes
+        assert_eq!(density, expected_density);
+    }
+
+    #[test]
+    fn test_top_10_highly_connected_nodes() {
+        let graph = create_test_graph();
+        let top_10 = top_10_highly_connected_nodes(&graph);
+        assert_eq!(top_10.len(), 3); // The test graph has 3 nodes
+        // Since all nodes have the same centrality, the order might not be guaranteed
+    }
+
+    #[test]
+    fn test_dfs_traversal() {
+        let graph = create_test_graph();
+        let start_node = 1; // Node with value 1
+        let dfs_result = dfs_traversal(&graph, start_node);
+        assert_eq!(dfs_result, HashSet::from([1, 2, 3])); // Should visit all nodes
+    }
+
+    #[test]
+    fn test_bfs_traversal() {
+        let graph = create_test_graph();
+        let start_node = 1; // Node with value 1
+        let bfs_result = bfs_traversal(&graph, start_node);
+        assert_eq!(bfs_result, HashSet::from([1, 2, 3])); // Should visit all nodes
+    }
+}
